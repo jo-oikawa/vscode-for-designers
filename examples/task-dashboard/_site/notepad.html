@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notepad</title>
+  <style>
+  :root {
+    /* Easy to customize — change these to match your style */
+    --color-bg: #0f0f0f;
+    --color-surface: #1a1a1a;
+    --color-surface-hover: #222222;
+    --color-border: #2a2a2a;
+    --color-text: #e5e5e5;
+    --color-text-muted: #888888;
+    --color-accent: #6c63ff;
+    --color-accent-light: #8b83ff;
+    --color-success: #4ade80;
+    --color-warning: #fbbf24;
+    --color-tag-bg: #2a2a3e;
+    --color-tag-text: #a5a0ff;
+    --font-sans: "Inter", "SF Pro Display", -apple-system, system-ui, sans-serif;
+    --font-mono: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.6;
+    padding: 2rem;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+
+  h2 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 2rem 0 0.75rem;
+  }
+
+  .subtitle {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+  }
+
+  .nav-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    color: var(--color-accent-light);
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  .nav-link:hover { text-decoration: underline; }
+
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    margin-bottom: 0.5rem;
+    transition: background 0.15s ease;
+  }
+  .card:hover { background: var(--color-surface-hover); }
+
+  .task-text { font-size: 0.95rem; }
+  .task-text.completed {
+    text-decoration: line-through;
+    color: var(--color-text-muted);
+  }
+
+  .tag {
+    display: inline-block;
+    background: var(--color-tag-bg);
+    color: var(--color-tag-text);
+    font-size: 0.75rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    margin-left: 0.5rem;
+    font-weight: 500;
+  }
+
+  .due-date {
+    font-size: 0.8rem;
+    color: var(--color-warning);
+    margin-left: 0.75rem;
+  }
+
+  .stats {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .stat-card {
+    flex: 1;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    text-align: center;
+  }
+  .stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.25rem;
+  }
+
+  .note-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .note-card h1, .note-card h2, .note-card h3 {
+    text-transform: none;
+    letter-spacing: normal;
+    color: var(--color-text);
+  }
+  .note-card h1 { font-size: 1.35rem; margin-bottom: 1rem; }
+  .note-card h2 { font-size: 1.1rem; margin: 1.25rem 0 0.5rem; }
+  .note-card h3 { font-size: 0.95rem; margin: 1rem 0 0.5rem; }
+  .note-card p { margin-bottom: 0.5rem; font-size: 0.95rem; }
+  .note-card code {
+    background: var(--color-tag-bg);
+    color: var(--color-tag-text);
+    padding: 0.1rem 0.35rem;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+  }
+  .note-card a {
+    color: var(--color-accent-light);
+    text-decoration: none;
+  }
+  .note-card a:hover { text-decoration: underline; }
+  .note-card hr {
+    border: none;
+    border-top: 1px solid var(--color-border);
+    margin: 1rem 0;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  .checkbox {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--color-border);
+    border-radius: 4px;
+    margin-right: 0.75rem;
+    vertical-align: middle;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .checkbox.checked {
+    background: var(--color-success);
+    border-color: var(--color-success);
+  }
+  .checkbox.checked::after {
+    content: "✓";
+    position: absolute;
+    top: -2px;
+    left: 2px;
+    font-size: 13px;
+    color: var(--color-bg);
+    font-weight: 700;
+  }
+
+  .task-row {
+    display: flex;
+    align-items: center;
+  }
+
+  .footer {
+    text-align: center;
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+</style>
+</head>
+<body>
+  <h1>📝 Notepad</h1>
+  <p class="subtitle">Your notes from the <code>notes/</code> folder — 2 notes found. Saves auto-refresh this page.</p>
+  <a class="nav-link" href="dashboard.html">📋 Open Task Dashboard →</a>
+
+  <div class="note-card"><p><h1>Design Inspiration</h1></p><p><h2>Color palettes I like</h2></p><p>- Warm sunset: <code>#FF6B35</code>, <code>#F7C59F</code>, <code>#EFEFD0</code>
+• Cool ocean: <code>#1A535C</code>, <code>#4ECDC4</code>, <code>#F7FFF7</code>
+• Muted earth: <code>#5F4B32</code>, <code>#A67C52</code>, <code>#D4C5A9</code></p><p><h2>Websites to revisit</h2></p><p>- <a href="https://www.typewolf.com" target="_blank" rel="noopener noreferrer">Typewolf</a> — font pairing ideas
+• <a href="https://mobbin.com" target="_blank" rel="noopener noreferrer">Mobbin</a> — mobile UI patterns
+• <a href="https://godly.website" target="_blank" rel="noopener noreferrer">Godly</a> — web design inspiration</p><p><h2>Ideas to explore</h2></p><p>- Try a dashboard layout with a sidebar navigation
+• Experiment with dark mode color tokens
+• Look into micro-interactions for button hover states
+</p></div>
+<div class="note-card"><p><h1>Welcome to your notepad!</h1></p><p>This is a sample note to get you started. You can write anything here — ideas, reminders, meeting notes, whatever you need.</p><p><h2>How notes work</h2></p><p>- Each <code>.md</code> file in this <code>notes/</code> folder becomes a page in your notepad
+• Write in plain text or use <strong>Markdown</strong> formatting (bold, lists, headings)
+• Create as many note files as you like — they'll all show up in the dashboard</p><p><h2>Tips</h2></p><p>- Use headings (<code>#</code>, <code>##</code>, <code>###</code>) to organize longer notes
+• Use <code>- [ ]</code> to create quick checklists inside a note
+• Ask Copilot to help you format or reorganize your notes anytime
+</p></div>
+
+  <div class="footer">
+    Generated from notes/ · Watching for changes — saves auto-refresh
+  </div>
+  
+<script>
+(function() {
+  var currentVersion = null;
+  setInterval(function() {
+    fetch('/version').then(function(r) { return r.text(); }).then(function(v) {
+      if (currentVersion === null) { currentVersion = v; return; }
+      if (v !== currentVersion) { location.reload(); }
+    }).catch(function() {});
+  }, 1500);
+})();
+</script>
+</body>
+</html>

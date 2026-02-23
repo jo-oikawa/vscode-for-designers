@@ -8,7 +8,11 @@ Each example is self-contained — you can open it in VS Code, follow the instru
 
 ## Index
 
-*Examples coming soon. Want to contribute one? See the [contributing guide](../README.md#contributing).*
+| Example | Description |
+|---------|-------------|
+| [`task-dashboard/`](task-dashboard/) | Turn simple markdown files into a visual task board and notepad — viewable inside VS Code |
+
+*Want to contribute an example? See the [contributing guide](../README.md#contributing).*
 
 ---
 
